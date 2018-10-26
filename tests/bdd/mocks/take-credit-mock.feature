@@ -6,8 +6,9 @@ Feature: stateful mock server
     * def id = 0
     * def credits = {}
     * def incr = function(arg) { return arg + 1;}
+    * def requestMatch = read('request-match.js')
 
-  Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json')
+  Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') &&requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'} )
     * def cred = request
     * eval id = incr(id)
     * eval cred.id = id
