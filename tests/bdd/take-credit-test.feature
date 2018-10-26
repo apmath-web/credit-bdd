@@ -18,7 +18,7 @@ Feature: integration test
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":60,"percent":5}   |
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":23450,"agreementAt":"2018-10-08","currency":"USD","duration":10,"percent":10}    |
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":34500000,"agreementAt":"2018-10-08","currency":"USD","duration":20,"percent":5}  |
-      | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":1,"percent":14}  |
+      | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":16,"percent":14}  |
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":23,"percent":15}  |
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":134500,"agreementAt":"2018-10-08","currency":"USD","duration":50,"percent":16}   |
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"TRU","duration":34,"percent":101} |
