@@ -55,5 +55,5 @@ Feature: integration test
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"TRU","duration":"1","percent":11}|
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"EUR","duration":10,"percent":"1"}|
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":50000,"agreementAt":null,"currency":"USD","duration":25,"percent":18}           |
-      | {"person":{"firstName":"Alexandra","lastName":null},"credit":20000,"agreementAt":"2018-10-08","currency":"USD","duration":100,"percent":""}  |
+      | {"person":{"firstName":"Alexandra","lastName":null},"credit":20000,"agreementAt":"2018-10-08","currency":"USD","duration":100,"percent":""}           |
       | {}                                                                                                                                                    |
