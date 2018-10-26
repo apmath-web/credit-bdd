@@ -31,7 +31,7 @@ Feature: integration test
     Scenario Outline: create credit positive
     Given request <request>
     When method post
-    Then status 404
+    Then status 400
 
     Examples:
       | request                                                                                                                                               |
