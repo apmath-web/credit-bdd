@@ -28,7 +28,7 @@ Feature: integration test
       | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":23240,"agreementAt":"2018-10-08","currency":"USD","duration":17,"percent":20}    |
 
 
-    Scenario Outline: create credit positive
+    Scenario Outline: create credit negative
     Given request <request>
     When method post
     Then status 400
