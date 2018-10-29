@@ -23,5 +23,5 @@ Feature: stateful mock server
   Scenario:
     # catch-all
     * def responseStatus = 404
-    * def response = { code: 1, message: 'Not Found' }
+    * def response = { code: 1, message: 'Not found' }
 
