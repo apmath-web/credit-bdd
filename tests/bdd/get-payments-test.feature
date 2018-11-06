@@ -17,6 +17,22 @@ Feature: integration test
     Then status 200
 
     Examples:
-      | id | type      | state      |
-      | 0  | 'early'   | 'paid'     |
-      | 0  | 'regular' | 'paid'     |
+      | id | type      | state  |
+      | 0  | 'early'   | 'paid' |
+      | 0  | 'regular' | 'paid' |
+
+  Scenario Outline: list payments for credit with corrupted data
+    Given path <id>
+    And path 'payments'
+    And param type = <type>
+    And param state = <state>
+    When method get
+    Then status 404
+
+    Examples:
+      | id | type        | state      |
+      | 0  | 'early'     | 'now'      |
+      | 0  | 'reg32ular' | 'paid'     |
+      | 0  | 'rrere'     | 'paid'     |
+      | 0  | 'r123das'   | 'upcoming' |
+      | 0  | 'early'     | 'upcoming' |
