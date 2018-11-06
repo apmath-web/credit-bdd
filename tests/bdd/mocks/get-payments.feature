@@ -48,6 +48,10 @@ Feature: stateful mock server
     * def response = work(credits[0].payments, paramValue('type'))
   #credits[0].payments[1].body +'adasd'
 
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'upcoming'
+    * def response = work(credits[0].payments, paramValue('type'))
+  #credits[0].payments[1].body +'adasd'
+
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'upcoming'
     * def responseStatus = 404
     * def response = { code: 1, message: 'Not implemented yet, in develop' }
