@@ -45,10 +45,11 @@ Feature: stateful mock server
     #call read('classpath:pay-credit.feature') config
 
   Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type') == 'regular'||paramValue('type') == 'early') && paramValue('state') == 'paid'
-    * def response = selectWithType(credits[0].payments, paramValue('type'))
+
+    * def response = selectWithType(credits[pathParams.id].payments, paramValue('type'))
 
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'upcoming'
-    * def response = selectWithType(credits[0].payments, paramValue('type'))
+    * def response = selectWithType(credits[pathParams.id].payments, paramValue('type'))
 
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'upcoming'
     * def responseStatus = 404
