@@ -39,16 +39,16 @@ Feature: stateful mock server
     * configure cors = true
     * configure responseHeaders = { 'Content-Type': 'application/json; charset=utf-8' }
     * def requestMatch = read('request-match.js')
-    * def work = function(jsObjects,type){var results=[]; jsObjects.forEach(function(age){if(type==age.type)results.push(age)});return results}
+    * def selectWithType = function(jsObjects,type){var results=[]; jsObjects.forEach(function(age){if(type==age.type)results.push(age)});return results}
     #Probably later implementation
     #call read('classpath:take-credit.feature') config
     #call read('classpath:pay-credit.feature') config
 
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') != null && paramValue('state') == 'paid'
-    * def response = work(credits[0].payments, paramValue('type'))
+  Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type') == 'regular'||paramValue('type') == 'early') && paramValue('state') == 'paid'
+    * def response = selectWithType(credits[0].payments, paramValue('type'))
 
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'upcoming'
-    * def response = work(credits[0].payments, paramValue('type'))
+    * def response = selectWithType(credits[0].payments, paramValue('type'))
 
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'upcoming'
     * def responseStatus = 404
