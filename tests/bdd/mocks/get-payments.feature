@@ -43,3 +43,13 @@ Feature: stateful mock server
     #Probably later implementation
     #call read('classpath:take-credit.feature') config
     #call read('classpath:pay-credit.feature') config
+
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') != null && paramValue('state') == 'paid'
+    * def response = work(credits[0].payments, paramValue('type'))
+  #credits[0].payments[1].body +'adasd'
+
+  Scenario:
+    # catch-all
+    * def responseStatus = 404
+    * def response = { code: 1, message: 'Not found' }
+
