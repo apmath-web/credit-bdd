@@ -29,6 +29,11 @@ Feature: stateful mock server
     * def response = {id:'#(id-1)'}
     #take-credit-mock.feature END
 
+  Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment": '#number',"type": '#string',"currency": '#string',"date": '#string'})
+    * def payment = request
+    * eval credits[pathParams.id].payments.add(payment)
+    * def response = {paymentExecutedAt:'#(request.date)'}
+
   Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type') == 'regular'||paramValue('type') == 'early') && paramValue('state') == 'paid'
     * def response = selectWithType(credits[pathParams.id].payments, paramValue('type'))
 
