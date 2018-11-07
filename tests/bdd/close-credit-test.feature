@@ -7,25 +7,43 @@ Feature: integration test
     * configure afterScenario = read('mocks/stop-mock.js')
     * configure headers = { 'Content-Type': 'application/json' }
 
-    Scenario: close credit
-        Given path 2
+    Scenario: Add credit
+        Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+        When method post
+        Then status 200
+        And def id1 = response.id
+
+        Given request {"person":{"firstName":"Alexandra","lastName":"Chnyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+        When method post
+        Then status 200
+        And def id2 = response.id
+
+        Given request {"person":{"firstName":"Alndra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+        When method post
+        Then status 200
+        And def id3 = response.id
+
+        Given path id1
     	When method get
     	Then status 200
-        And match response == {message : 'deleted'}
-    Scenario: hui
-        Given path 4
+        And match response == {message : 'Done'}
+
+        Given path id2
         When method get
         Then status 200
-        And match response == {message : 'deleted'}
+        And match response == {message : 'Done'}
 
-    Scenario: close credit
-        Given path "5ig"
+        Given path id3
+        When method get
+        Then status 200
+        And match response == {message : 'Done'}
+
+        Given path "i"
         When method get
         Then status 400
-        And match response == {message : 'not exist'}
+        And match response == {message : 'Uncorrect'}
 
-    Scenario: close credit
-        Given path 20
+        Given path 10
         When method get
-        Then status 400
-        And match response == {message : 'not exist'}
+        Then status 404
+        And match response == {message : 'Not exist'}
