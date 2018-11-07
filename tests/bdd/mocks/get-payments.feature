@@ -8,6 +8,7 @@ Feature: stateful mock server
     #Probably later implementation
     #call read('classpath:take-credit.feature') config
     #call read('classpath:pay-credit.feature') config
+    #call read('classpath:delete-credit.feature') config
     #take-credit-mock.feature START
     * def id = 0
     * def credits = []
@@ -16,7 +17,8 @@ Feature: stateful mock server
 
     * def selectWithType = function(jsObjects,type){var results=[]; jsObjects.forEach(function(age){if(type==age.type)results.push(age)});return results}
 
-    #take-credit-mock.feature START
+  #Create new credit
+  #take-credit-mock.feature START
   Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') && requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'} )
     * def cred = request
     * eval id = incr(id)
@@ -27,8 +29,9 @@ Feature: stateful mock server
     #take-credit-mock.feature RESUME
     * eval credits.add(cred)
     * def response = {id:'#(id-1)'}
-    #take-credit-mock.feature END
+  #take-credit-mock.feature END
 
+  #Create new payment
   Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment": '#number',"type": '#string',"currency": '#string',"date": '#string'})
     * def payment = request
     * eval credits[pathParams.id].payments.add(payment)
@@ -44,10 +47,12 @@ Feature: stateful mock server
     * def responseStatus = 404
     * def response = { code: 1, message: 'Not implemented yet, in develop' }
 
+  #Delete credit
   Scenario: pathMatches('/credit/{id}') && methodIs('delete')
     * def responseStatus = 204
     * def credit = []
 
+  #404 error
   Scenario:
     * def responseStatus = 404
     * def response = { code: 1, message: 'Not found' }
