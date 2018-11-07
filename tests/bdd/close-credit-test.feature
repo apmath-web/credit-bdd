@@ -7,25 +7,26 @@ Feature: integration test
     * configure afterScenario = read('mocks/stop-mock.js')
     * configure headers = { 'Content-Type': 'application/json' }
 
-    Scenario: close credit
+    Scenario: Good request
         Given path 2
     	When method get
     	Then status 200
-        And match response == {message : 'deleted'}
-    Scenario: hui
+        And match response == {message : 'Done'}
+
+    Scenario: Good request 
         Given path 4
         When method get
         Then status 200
-        And match response == {message : 'deleted'}
+        And match response == {message : 'Done'}
 
-    Scenario: close credit
-        Given path "5ig"
+    Scenario: Bad request
+        Given path "i"
         When method get
         Then status 400
-        And match response == {message : 'not exist'}
+        And match response == {message : 'Uncorrect'}
 
-    Scenario: close credit
-        Given path 20
+    Scenario: Bad request
+        Given path 10
         When method get
-        Then status 400
-        And match response == {message : 'not exist'}
+        Then status 404
+        And match response == {message : 'Not exist'}
