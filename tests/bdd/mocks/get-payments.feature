@@ -15,7 +15,45 @@ Feature: stateful mock server
     * def incr = function(arg) { return arg + 1;}
     #take-credit-mock.featureEND
 
-    * def selectWithType = function(jsObjects,type){var results=[]; jsObjects.forEach(function(age){if(type==age.type)results.push(age)});return results}
+    * def selectWithType =
+    """
+    function (jsObjects, type) {
+        var results = [];
+        jsObjects.forEach(function (result) {
+            if (type === result.type) results.push(result)
+        });
+        return results
+    }
+    """
+    * def getPayments =
+    """
+    function () {
+        var duration = credits[pathParams.id].duration;
+        for (var i = 0; i < payments.length; i++) {
+            results.add(payments[i])
+        }
+        for (var i = payments.length; i < duration; i++) {
+            results.add({'type':'regular','state':'paid','date':'2018-10-08','payment':22300,'percent':10000.10,'body':12299.90,'remainCreditBody':907704.11,'fullEarlyRepayment':908704})
+        }
+        return results
+    }
+    """
+    * def createPayment =
+    """
+    function (pay) {
+        payment.type = pay.type;
+        payment.state = 'paid';
+        payment.date = pay.date;
+        payment.payment = pay.payment;
+        payment.percent = pay.payment*0.18;
+        payment.body = payment.payment-payment.percent;
+        credits[pathParams.id].credit -= payment.body;
+        payment.remainCreditBody = credits[pathParams.id].credit;
+
+        return payment;
+    }
+    """
+
 
   #Create new credit
   #take-credit-mock.feature START
@@ -34,11 +72,16 @@ Feature: stateful mock server
   #Create new payment
   Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment": '#number',"type": '#string',"currency": '#string',"date": '#string'})
     * def payment = request
+    * def payment = createPayment(request)
     * eval credits[pathParams.id].payments.add(payment)
     * def response = {paymentExecutedAt:'#(request.date)'}
 
-  Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type') == 'regular'||paramValue('type') == 'early') && paramValue('state') == 'paid'
-    * def response = selectWithType(credits[pathParams.id].payments, paramValue('type'))
+  #Get all payments
+  Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type')=='regular'||paramValue('type')=='early'||paramValue('type')==null) && paramValue('state')==null
+    * def results = []
+    * def payments = credits[pathParams.id].payments
+    * def results = getPayments()
+    * def response = {payments:'#(results)'}
 
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'upcoming'
     * def response = selectWithType(credits[pathParams.id].payments, paramValue('type'))
@@ -50,7 +93,7 @@ Feature: stateful mock server
   #Delete credit
   Scenario: pathMatches('/credit/{id}') && methodIs('delete')
     * def responseStatus = 204
-    * def credit = []
+    * eval credits[pathParams.id] = {}
 
   #404 error
   Scenario:
