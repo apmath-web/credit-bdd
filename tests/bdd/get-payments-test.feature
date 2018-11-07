@@ -23,6 +23,12 @@ Feature: integration test
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
 
+  ##Get all payments
+    Given path id
+    And path 'payments'
+    When method get
+    Then status 200
+
   #Perfrom 2nd payment
     Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-02"}
     And path id
@@ -57,6 +63,12 @@ Feature: integration test
     When method put
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
+
+  ##Get all payments
+    Given path id
+    And path 'payments'
+    When method get
+    Then status 200
 
   #Delete credit
     Given path id
