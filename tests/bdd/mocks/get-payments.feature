@@ -44,6 +44,10 @@ Feature: stateful mock server
     * def responseStatus = 404
     * def response = { code: 1, message: 'Not implemented yet, in develop' }
 
+  Scenario: pathMatches('/credit/{id}') && methodIs('delete')
+    * def responseStatus = 204
+    * def credit = []
+
   Scenario:
     * def responseStatus = 404
     * def response = { code: 1, message: 'Not found' }
