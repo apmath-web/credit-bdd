@@ -8,31 +8,50 @@ Feature: integration test
     * configure afterScenario = read('mocks/stop-mock.js')
     * configure headers = { 'Content-Type': 'application/json' }
 
-  Scenario Outline: list payments for credit
-    Given path <id>
-    And path 'payments'
-    And param type = <type>
-    And param state = <state>
-    When method get
+  Scenario: Create a full credit history
+
+    Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+    When method post
     Then status 200
+    And def id = response.id
 
-    Examples:
-      | id | type      | state  |
-      | 0  | 'early'   | 'paid' |
-      | 0  | 'regular' | 'paid' |
+    Given request {"payment":172600.00,"type":"regular","currency":"RUB","date":"2018-01-01"}
+    And path id
+    When method put
+    Then status 200
+    And match response == {paymentExecutedAt:'#string'}
 
-  Scenario Outline: list payments for credit with corrupted data
-    Given path <id>
-    And path 'payments'
-    And param type = <type>
-    And param state = <state>
-    When method get
-    Then status 404
+    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-02"}
+    And path id
+    When method put
+    Then status 200
+    And match response == {paymentExecutedAt:'#string'}
 
-    Examples:
-      | id | type        | state      |
-      | 0  | 'early'     | 'now'      |
-      | 0  | 'reg32ular' | 'paid'     |
-      | 0  | 'rrere'     | 'paid'     |
-      | 0  | 'r123das'   | 'upcoming' |
-      | 0  | 'early'     | 'upcoming' |
+    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-03"}
+    And path id
+    When method put
+    Then status 200
+    And match response == {paymentExecutedAt:'#string'}
+
+    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-04"}
+    And path id
+    When method put
+    Then status 200
+    And match response == {paymentExecutedAt:'#string'}
+
+    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-05"}
+    And path id
+    When method put
+    Then status 200
+    And match response == {paymentExecutedAt:'#string'}
+
+    Given request {"payment":171890.00,"type":"regular","currency":"USD","date":"2018-01-06"}
+    And path id
+    When method put
+    Then status 200
+    And match response == {paymentExecutedAt:'#string'}
+
+    Given path id
+    When method DELETE
+    Then status 204
+    And match response == ''
