@@ -78,3 +78,8 @@ Feature: integration test
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
 
+  #Delete credit
+    Given path id
+    When method DELETE
+    Then status 204
+    And match response == ''
