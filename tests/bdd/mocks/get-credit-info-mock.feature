@@ -7,13 +7,11 @@ Feature: stateful mock server
         * def person = {}
         * def requestMatch = read('request-match.js')
 
-
-
     #take-credit-mock.feature START
     * def id = 0
     * def credits = []
     * def incr = function(arg) { return arg + 1;}
-    #take-credit-mock.feature START
+    #take-credit-mock.feature END
 
     #Create new credit
     #take-credit-mock.feature START
@@ -27,6 +25,7 @@ Feature: stateful mock server
         * def response = {id:'#(id-1)'}
     #take-credit-mock.feature END
 
+    #Get credit info
     Scenario: pathMatches('/credit/{id}') && methodIs('get') && typeContains('json')
         * def response = {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":60,"percent":5}
 
