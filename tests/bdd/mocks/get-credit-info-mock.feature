@@ -27,7 +27,7 @@ Feature: stateful mock server
 
     #Get credit info
     Scenario: pathMatches('/credit/{id}') && methodIs('get') && typeContains('json')
-        * def response = {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":60,"percent":5}
+        * def response = {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
 
     Scenario:
         * def responseStatus = 404
