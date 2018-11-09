@@ -15,12 +15,11 @@ Feature: integration test
     Then status 200
     And def id = response.id
 
-    ## Get credit info
-    credit was found
+    ##Get credit info
     Given path id
     When method get
     Then status 200
     And match response == {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
 
-    
+
 
