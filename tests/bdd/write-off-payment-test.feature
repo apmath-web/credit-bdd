@@ -9,7 +9,7 @@ Feature: integration test
 
   Scenario: Create a full credit history
 
-   #Create new credit
+  #Create new credit
     Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2017-12-01","currency":"RUB","duration":6,"percent":5}
     When method post
     Then status 200
