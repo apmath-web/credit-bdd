@@ -1,4 +1,4 @@
-Feature: stateful mock server
+Feature: Get payments mock server
 
   Background:
     * configure cors = true
@@ -88,6 +88,5 @@ Feature: stateful mock server
 
   #404 error
   Scenario:
-    * def responseStatus = 404
-    * def response = { code: 1, message: 'Not found' }
+    * eval badResponse()
 

@@ -1,4 +1,4 @@
-Feature: integration test
+Feature: Get payments test
   #java -jar karate.jar tests/bdd/get-payments-test.feature
 
   Background:
