@@ -113,3 +113,9 @@ Feature: integration test
     When method DELETE
     Then status 204
     And match response == ''
+
+  ##Get all payments
+    Given path id
+    And path 'payments'
+    When method get
+    Then status 200

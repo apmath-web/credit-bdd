@@ -18,6 +18,13 @@ Feature: stateful mock server
         return results
     }
     """
+    * def badResponse =
+    """
+    function (type) {
+        var responseStatus = 404
+        var response = { code: 1, message: 'Not found' }
+    }
+    """
 
     * table payments
       | payment                                                                                                                                                 |
@@ -43,25 +50,31 @@ Feature: stateful mock server
     * def response = {paymentExecutedAt:'#(request.date)'}
 
   #Get all payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type')==null && paramValue('state') == null
-    * def payments = credits[pathParams.id].payments
-    * def response = {payments:'#(payments)'}
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == null && paramValue('state') == null
+    * def goodResponse =
+    """
+    function() {
+        var payments = credits[pathParams.id].payments
+        var response = {payments:'#(payments)'}
+    }
+    """
+    * eval if (credits[pathParams.id] === null ? badResponse() : goodResponse());
 
   #Get all paid payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type')==null && paramValue('state') == 'paid'
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == null && paramValue('state') == 'paid'
     * def results = []
     * eval for (var i = 0; i < credits[pathParams.id].pay_id; i++) {results.add(payments[i])}
     * def response = results
 
   #Get all upcoming payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type')==null && paramValue('state') == 'upcoming'
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == null && paramValue('state') == 'upcoming'
     * def results = []
     * eval for (var i = credits[pathParams.id].pay_id; i < credits[pathParams.id].duration; i++) {results.add(payments[i])}
     * def response = results
 
   #Get regular or early and paid payments
   Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type') == 'regular' || paramValue('type') == 'early') && paramValue('state') == 'paid'
-    * def response = selectWithType(paramValue('type'))
+    * eval if (credits[pathParams.id] === null ? badResponse() : response = selectWithType(paramValue('type')) );
 
   #Get early and upcoming payments
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'upcoming'
