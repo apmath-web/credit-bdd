@@ -8,6 +8,17 @@ Feature: stateful mock server
     * def id = 0
     * def credits = []
 
+    * def selectWithType =
+    """
+    function (type) {
+        var results = [];
+        payments.forEach(function (payment) {
+            if (type === payment.payment.type) results.push(payment)
+        });
+        return results
+    }
+    """
+
     * table payments
       | payment                                                                                                                                                 |
       | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-01","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":858468.0} |
@@ -48,6 +59,11 @@ Feature: stateful mock server
     * eval for (var i = credits[pathParams.id].pay_id; i < credits[pathParams.id].duration; i++) {results.add(payments[i])}
     * def response = results
 
+  #Get regular and paid payments
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'paid'
+    * def response = selectWithType(paramValue('type'))
+
+  #Get early and paid payments
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'paid'
     * def responseStatus = 404
     * def response = { code: 1, message: 'Not implemented yet, in develop' }
