@@ -32,18 +32,18 @@ Feature: stateful mock server
     * def response = {paymentExecutedAt:'#(request.date)'}
 
   #Get all payments
-  Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type')=='regular'||paramValue('type')=='early'||paramValue('type')==null) && paramValue('state')==null
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type')==null && paramValue('state') == null
     * def payments = credits[pathParams.id].payments
     * def response = {payments:'#(payments)'}
 
-  #Get regular and paid payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'paid'
+  #Get all paid payments
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type')==null && paramValue('state') == 'paid'
     * def results = []
     * eval for (var i = 0; i < credits[pathParams.id].pay_id; i++) {results.add(payments[i])}
     * def response = results
 
-  #Get regular and upcoming payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'upcoming'
+  #Get all upcoming payments
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type')==null && paramValue('state') == 'upcoming'
     * def results = []
     * eval for (var i = credits[pathParams.id].pay_id; i < credits[pathParams.id].duration; i++) {results.add(payments[i])}
     * def response = results

@@ -36,10 +36,9 @@ Feature: integration test
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
 
-  ##Get regular and paid payments
+  ##Get all paid payments
     Given path id
     And path 'payments'
-    And param type = 'regular'
     And param state = 'paid'
     When method get
     Then status 200
@@ -51,10 +50,9 @@ Feature: integration test
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
 
-  ##Get regular and upcoming payments
+  ##Get all upcoming payments
     Given path id
     And path 'payments'
-    And param type = 'regular'
     And param state = 'upcoming'
     When method get
     Then status 200
