@@ -22,6 +22,14 @@ Feature: integration test
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
 
+  #Get next payment
+    Given path id
+    And path 'payments'
+    And param state = 'next'
+    When method get
+    Then status 200
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-02-01","payment":169106.00,"percent":4167.00,"body":164939.00,"remainCreditBody":835061.00}]}
+
   #Trying 2nd payment - wrong currency
     Given request {"payment":169106.00,"currency":"USD"}
     And path id
@@ -70,6 +78,14 @@ Feature: integration test
     When method put
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
+
+  #Get next payment
+    Given path id
+    And path 'payments'
+    And param state = 'next'
+    When method get
+    Then status 200
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-06-01","payment":37177.00,"percent":154.00,"body":36963.00,"remainCreditBody":0.00}]}
 
   #Perfrom last payment
     Given request {"payment":37177.00}
