@@ -10,7 +10,7 @@ Feature: integration test
 
   Scenario: Create a full credit history
 
-   #Create new credit
+  #Create new credit
     Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
     When method post
     Then status 200
@@ -35,6 +35,14 @@ Feature: integration test
     When method put
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
+
+  ##Get regular and paid payments
+    Given path id
+    And path 'payments'
+    And param type = 'regular'
+    And param state = 'paid'
+    When method get
+    Then status 200
 
   #Perfrom 3nd payment
     Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-03"}
