@@ -83,3 +83,4 @@ Feature: integration test
     When method DELETE
     Then status 204
     And match response == ''
+

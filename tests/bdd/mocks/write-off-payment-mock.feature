@@ -53,10 +53,10 @@ Feature: stateful mock server
     * def response = {"paymentExecutedAt" : "#(date)"}
 
   #Delete credit
-  Scenario: Scenario: pathMatches('/credit/{id}') && methodIs('delete') && typeContains('json') 
-    * eval delete credits[pathParams.id]
+  Scenario: pathMatches('/credit/{id}') && methodIs('delete')
     * def responseStatus = 204
-    * def response = (credits[pathParams.id]) ? credits[pathParams.id] : ''
+    * eval credits[pathParams.id] = {}
+
   Scenario:
     # catch-all
     * def responseStatus = 204
