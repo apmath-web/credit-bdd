@@ -4,83 +4,37 @@ Feature: stateful mock server
     * configure cors = true
     * configure responseHeaders = { 'Content-Type': 'application/json; charset=utf-8' }
     * def requestMatch = read('request-match.js')
-
-    #Probably later implementation
-    #call read('classpath:take-credit.feature') config
-    #call read('classpath:pay-credit.feature') config
-    #call read('classpath:delete-credit.feature') config
-    #take-credit-mock.feature START
+    * def incr = function(arg) { return arg + 1;}
     * def id = 0
     * def credits = []
-    * def incr = function(arg) { return arg + 1;}
-    #take-credit-mock.featureEND
 
-    * def selectWithType =
-    """
-    function (jsObjects, type) {
-        var results = [];
-        jsObjects.forEach(function (result) {
-            if (type === result.type) results.push(result)
-        });
-        return results
-    }
-    """
-    * def getPayments =
-    """
-    function () {
-        var duration = credits[pathParams.id].duration;
-        for (var i = 0; i < payments.length; i++) {
-            results.add(payments[i])
-        }
-        for (var i = payments.length; i < duration; i++) {
-            results.add({'type':'regular','state':'paid','date':'2018-10-08','payment':22300,'percent':10000.10,'body':12299.90,'remainCreditBody':907704.11,'fullEarlyRepayment':908704})
-        }
-        return results
-    }
-    """
-    * def createPayment =
-    """
-    function (pay) {
-        payment.type = pay.type;
-        payment.state = 'paid';
-        payment.date = pay.date;
-        payment.payment = pay.payment;
-        payment.percent = pay.payment*0.18;
-        payment.body = payment.payment-payment.percent;
-        credits[pathParams.id].credit -= payment.body;
-        payment.remainCreditBody = credits[pathParams.id].credit;
-
-        return payment;
-    }
-    """
-
+    * table payments
+      | id | payment                                                                                                                                                 |
+      | 0  | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-01","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":858468.0} |
+      | 1  | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-02","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":716936.0} |
+      | 2  | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-03","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":575404.0} |
+      | 3  | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-04","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":433872.0} |
+      | 4  | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-05","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":292340.0} |
+      | 5  | {"payment":171890.0,"type":"regular","currency":"USD","date":"2018-01-06","state":"paid","percent":30940.2,"body":140949.8,"remainCreditBody":151390.2} |
 
   #Create new credit
-  #take-credit-mock.feature START
   Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') && requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'} )
     * def cred = request
     * eval id = incr(id)
-    * eval cred.id = id
-    #take-credit-mock.feature PAUSE
-    * def payments = []
     * eval cred.payments = payments
-    #take-credit-mock.feature RESUME
+    * eval cred.pay_id = 0
     * eval credits.add(cred)
     * def response = {id:'#(id-1)'}
-  #take-credit-mock.feature END
 
   #Create new payment
   Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment": '#number',"type": '#string',"currency": '#string',"date": '#string'})
-    * def payment = request
-    * def payment = createPayment(request)
-    * eval credits[pathParams.id].payments.add(payment)
+    * eval credits[pathParams.id].pay_id = incr(credits[pathParams.id].pay_id)
     * def response = {paymentExecutedAt:'#(request.date)'}
 
   #Get all payments
   Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type')=='regular'||paramValue('type')=='early'||paramValue('type')==null) && paramValue('state')==null
     * def results = []
     * def payments = credits[pathParams.id].payments
-    * def results = getPayments()
     * def response = {payments:'#(results)'}
 
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'upcoming'
