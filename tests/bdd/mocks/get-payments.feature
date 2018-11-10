@@ -42,6 +42,12 @@ Feature: stateful mock server
     * eval for (var i = 0; i < credits[pathParams.id].pay_id; i++) {results.add(payments[i])}
     * def response = results
 
+  #Get regular and upcoming payments
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'upcoming'
+    * def results = []
+    * eval for (var i = credits[pathParams.id].pay_id; i < credits[pathParams.id].duration; i++) {results.add(payments[i])}
+    * def response = results
+
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'paid'
     * def responseStatus = 404
     * def response = { code: 1, message: 'Not implemented yet, in develop' }
