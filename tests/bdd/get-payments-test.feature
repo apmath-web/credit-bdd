@@ -64,6 +64,14 @@ Feature: integration test
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
 
+  ##Get regular and paid payments
+    Given path id
+    And path 'payments'
+    And param type = 'regular'
+    And param state = 'paid'
+    When method get
+    Then status 200
+
   #Perfrom 5th payment
     Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-05"}
     And path id
