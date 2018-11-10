@@ -87,6 +87,14 @@ Feature: integration test
     When method get
     Then status 200
 
+  ##Get early and upcoming payments
+    Given path id
+    And path 'payments'
+    And param type = 'early'
+    And param state = 'upcoming'
+    When method get
+    Then status 400
+
   #Perfrom 6th payment
     Given request {"payment":171890.00,"type":"regular","currency":"USD","date":"2018-01-06"}
     And path id

@@ -67,10 +67,10 @@ Feature: stateful mock server
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'paid'
     * def response = selectWithType(paramValue('type'))
 
-  #Get early and paid payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'paid'
-    * def responseStatus = 404
-    * def response = { code: 1, message: 'Not implemented yet, in develop' }
+  #Get early and upcoming payments
+  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'upcoming'
+    * def responseStatus = 400
+    * def response = { code: 2, message: 'Bad Request' }
 
   #Delete credit
   Scenario: pathMatches('/credit/{id}') && methodIs('delete')
