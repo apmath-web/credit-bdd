@@ -59,12 +59,8 @@ Feature: stateful mock server
     * eval for (var i = credits[pathParams.id].pay_id; i < credits[pathParams.id].duration; i++) {results.add(payments[i])}
     * def response = results
 
-  #Get regular and paid payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'regular' && paramValue('state') == 'paid'
-    * def response = selectWithType(paramValue('type'))
-
-  #Get early and paid payments
-  Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'paid'
+  #Get regular or early and paid payments
+  Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type') == 'regular' || paramValue('type') == 'early') && paramValue('state') == 'paid'
     * def response = selectWithType(paramValue('type'))
 
   #Get early and upcoming payments
