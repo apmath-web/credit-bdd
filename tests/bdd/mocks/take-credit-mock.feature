@@ -21,4 +21,4 @@ Feature: stateful mock server
   Scenario:
     # catch-all
     * def responseStatus = 400
-    * def response = { code: 1, message: 'Invalid request format' }
+    * def response = { message: "Invalid request format", description: {something: "wrong"} }
