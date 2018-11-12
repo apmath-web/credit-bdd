@@ -92,4 +92,3 @@ Feature: Get payments mock server
   #404 error
   Scenario:
     * eval badResponse()
-
