@@ -33,7 +33,7 @@ Feature: integration test
     When method post
     Then status 400
     And match response contains{ message:'#string' }
-    And match response contains any { description:'#object'}
+    And match response contains any { message:'#string',description:'#object'}
 
     Examples:
       | request                                                                                                                                               |
