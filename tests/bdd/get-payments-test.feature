@@ -28,6 +28,7 @@ Feature: Get payments test
     And path 'payments'
     When method get
     Then status 200
+    And match response == {payments:'#array'}
 
   #Perfrom 2nd payment
     Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-02"}
@@ -42,6 +43,7 @@ Feature: Get payments test
     And param state = 'paid'
     When method get
     Then status 200
+    And match response == {payments:'#array'}
 
   #Perfrom 3nd payment
     Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-03"}
@@ -56,6 +58,7 @@ Feature: Get payments test
     And param state = 'upcoming'
     When method get
     Then status 200
+    And match response == {payments:'#array'}
 
   #Perfrom 4th payment
     Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-04"}
@@ -71,6 +74,7 @@ Feature: Get payments test
     And param state = 'paid'
     When method get
     Then status 200
+    And match response == {payments:'#array'}
 
   #Perfrom 5th payment
     Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-05"}
@@ -86,6 +90,7 @@ Feature: Get payments test
     And param state = 'paid'
     When method get
     Then status 200
+    And match response == {payments:null}
 
   ##Get early and upcoming payments
     Given path id
@@ -94,6 +99,7 @@ Feature: Get payments test
     And param state = 'upcoming'
     When method get
     Then status 400
+    And match response == { code: 2, message: 'Bad Request' }
 
   #Perfrom 6th payment
     Given request {"payment":171890.00,"type":"regular","currency":"USD","date":"2018-01-06"}
@@ -107,6 +113,7 @@ Feature: Get payments test
     And path 'payments'
     When method get
     Then status 200
+    And match response == {payments:'#array'}
 
   #Delete credit
     Given path id
@@ -118,4 +125,5 @@ Feature: Get payments test
     Given path id
     And path 'payments'
     When method get
-    Then status 200
+    Then status 404
+    And match response == {"code":1,"message":"Not found"}
