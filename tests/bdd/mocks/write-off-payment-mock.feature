@@ -13,7 +13,7 @@ Feature: stateful mock server
     * def requestMatch = read('request-match.js')
 
   #Creating credit
-  Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') &&requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'} )
+  Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') &&requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"amount":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'} )
     * def cred = request
     * eval id = incr(id)
     * eval cred.id = id
@@ -49,7 +49,7 @@ Feature: stateful mock server
   #First payment
   Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment": "#number"})
     * def date = "2018-01-01"
-    * eval credits[id].credit -= request.payment
+    * eval credits[pathParams.id].credit -= request.payment
     * def response = {"paymentExecutedAt" : "#(date)"}
 
   #Delete credit
