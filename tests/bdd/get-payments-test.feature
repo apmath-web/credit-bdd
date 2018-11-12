@@ -15,6 +15,7 @@ Feature: Get payments test
     When method post
     Then status 200
     And def id = response.id
+    And match response == {id:'#number'}
 
   #Perfrom 1st payment
     Given request {"payment":172600.00,"type":"regular","currency":"RUB","date":"2018-01-01"}
@@ -28,10 +29,10 @@ Feature: Get payments test
     And path 'payments'
     When method get
     Then status 200
-    And match response == {payments:'#array'}
+    And match response == {"payments":[{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"upcoming","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"upcoming","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"upcoming","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"upcoming","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"upcoming","percent":'#number',"body":'#number',"remainCreditBody":'#number'}]}
 
   #Perfrom 2nd payment
-    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-02"}
+    Given request {"payment":172600.00,"type":"regular","currency":"RUB","date":"2018-01-02"}
     And path id
     When method put
     Then status 200
@@ -43,10 +44,10 @@ Feature: Get payments test
     And param state = 'paid'
     When method get
     Then status 200
-    And match response == {payments:'#array'}
+    And match response == {"payments":[{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'}]}
 
   #Perfrom 3nd payment
-    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-03"}
+    Given request {"payment":172600.00,"type":"regular","currency":"RUB","date":"2018-01-03"}
     And path id
     When method put
     Then status 200
@@ -58,10 +59,10 @@ Feature: Get payments test
     And param state = 'upcoming'
     When method get
     Then status 200
-    And match response == {payments:'#array'}
+    And match response == {"payments":[{"payment":{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'}},{"payment":{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'}},{"payment":{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'}}]}
 
   #Perfrom 4th payment
-    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-04"}
+    Given request {"payment":172600.00,"type":"regular","currency":"RUB","date":"2018-01-04"}
     And path id
     When method put
     Then status 200
@@ -74,10 +75,10 @@ Feature: Get payments test
     And param state = 'paid'
     When method get
     Then status 200
-    And match response == {payments:'#array'}
+    And match response == {"payments":[{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'}]}
 
   #Perfrom 5th payment
-    Given request {"payment":172600.00,"type":"regular","currency":"USD","date":"2018-01-05"}
+    Given request {"payment":172600.00,"type":"regular","currency":"RUB","date":"2018-01-05"}
     And path id
     When method put
     Then status 200
@@ -102,7 +103,7 @@ Feature: Get payments test
     And match response == { code: 2, message: 'Bad Request' }
 
   #Perfrom 6th payment
-    Given request {"payment":171890.00,"type":"regular","currency":"USD","date":"2018-01-06"}
+    Given request {"payment":171890.00,"type":"regular","currency":"RUB","date":"2018-01-06"}
     And path id
     When method put
     Then status 200
@@ -113,7 +114,7 @@ Feature: Get payments test
     And path 'payments'
     When method get
     Then status 200
-    And match response == {payments:'#array'}
+    And match response == {"payments":[{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'},{"payment":'#number',"type":"regular","currency":"RUB","date":'#string',"state":"paid","percent":'#number',"body":'#number',"remainCreditBody":'#number'}]}
 
   #Delete credit
     Given path id

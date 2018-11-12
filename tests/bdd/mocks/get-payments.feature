@@ -8,34 +8,16 @@ Feature: Get payments mock server
     * def id = 0
     * def credits = []
 
-    * def selectWithType =
-    """
-    function (type) {
-        var results = [];
-        payments.forEach(function (payment) {
-            if (type === payment.paymentPaid.type) results.push(payment)
-        });
-        return results
-    }
-    """
-    * def badResponse =
-    """
-    function (type) {
-        var responseStatus = 404
-        var response = { code: 1, message: 'Not found' }
-    }
-    """
-
     * table payments
-      | paymentPaid                                                                                                                                             |
+      | payment                                                                                                                                                 |
       | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-01","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":858468.0} |
-      | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-02","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":716936.0} |
-      | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-03","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":575404.0} |
-      | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-04","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":433872.0} |
-      | {"payment":172600.0,"type":"regular","currency":"USD","date":"2018-01-05","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":292340.0} |
-      | {"payment":171890.0,"type":"regular","currency":"USD","date":"2018-01-06","state":"paid","percent":30940.2,"body":140949.8,"remainCreditBody":151390.2} |
+      | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-02","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":716936.0} |
+      | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-03","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":575404.0} |
+      | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-04","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":433872.0} |
+      | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-05","state":"paid","percent":31068.0,"body":141532.0,"remainCreditBody":292340.0} |
+      | {"payment":171890.0,"type":"regular","currency":"RUB","date":"2018-01-06","state":"paid","percent":30940.2,"body":140949.8,"remainCreditBody":151390.2} |
     * table paymentUpcoming
-      | paymentPaid                                                                                                                                             |
+      | payment                                                                                                                                                     |
       | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-01","state":"upcoming","percent":31068.0,"body":141532.0,"remainCreditBody":858468.0} |
 
   #Create new credit
@@ -54,17 +36,17 @@ Feature: Get payments mock server
 
   #Get all payments
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == null && paramValue('state') == null
-    * def id = (credits[pathParams.id] == null ? 0 : credits[pathParams.id].pay_id);
+    * def idP = (credits[pathParams.id] == null ? 0 : credits[pathParams.id].pay_id);
     * def results = []
-    * eval for (var i = 0; i < id; i++) {results.add(payments[i])}
-    * eval for (var i = id; i < 6; i++) {results.add(paymentUpcoming[0])}
+    * eval for (var i = 0; i < idP; i++) {results.add(payments[i].payment)}
+    * eval for (var i = idP; i < 6; i++) {results.add(paymentUpcoming[0].payment)}
     * def response = (credits[pathParams.id] == null ? { code: 1, message: 'Not found' } : {payments:results});
     * def responseStatus = (credits[pathParams.id] == null ? 404 : 200);
 
   #Get all paid payments
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == null && paramValue('state') == 'paid'
     * def results = []
-    * eval for (var i = 0; i < credits[pathParams.id].pay_id; i++) {results.add(payments[i])}
+    * eval for (var i = 0; i < credits[pathParams.id].pay_id; i++) {results.add(payments[i].payment)}
     * def response = {payments:'#(results)'}
 
   #Get all upcoming payments
@@ -75,7 +57,9 @@ Feature: Get payments mock server
 
   #Get regular or early and paid payments
   Scenario: pathMatches('/credit/{id}/payments') && (paramValue('type') == 'regular' || paramValue('type') == 'early') && paramValue('state') == 'paid'
-    * def res = selectWithType(paramValue('type'))
+    * def idP = (credits[pathParams.id] == null ? 0 : credits[pathParams.id].pay_id);
+    * def res = []
+    * eval for (var i = 0; i < idP; i++) if (payments[i].payment.type == paramValue('type')) {res.add(payments[i].payment)}
     * def res = (res.length == 0 ? null : res)
     * def response = (credits[pathParams.id] == null ? { code: 1, message: 'Not found' } : response = {payments:res} )
 
@@ -91,4 +75,5 @@ Feature: Get payments mock server
 
   #404 error
   Scenario:
-    * eval badResponse()
+    * def responseStatus = 404
+    * def response = { code: 1, message: 'Not found' }
