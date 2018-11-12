@@ -32,6 +32,8 @@ Feature: integration test
     Given request <request>
     When method post
     Then status 400
+    And match response contains{ message:'#string' }
+    And match response contains any { description:'#object'}
 
     Examples:
       | request                                                                                                                                               |
