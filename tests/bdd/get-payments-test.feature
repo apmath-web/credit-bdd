@@ -11,7 +11,7 @@ Feature: Get payments test
   Scenario: Create a full credit history
 
   #Create new credit
-    Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+    Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
     When method post
     Then status 200
     And def id = response.id
@@ -100,7 +100,7 @@ Feature: Get payments test
     And param state = 'upcoming'
     When method get
     Then status 400
-    And match response == { code: 2, message: 'Bad Request' }
+    And match response == {message: 'Bad Request' }
 
   #Perfrom 6th payment
     Given request {"payment":171890.00,"type":"regular","currency":"RUB","date":"2018-01-06"}
@@ -127,4 +127,4 @@ Feature: Get payments test
     And path 'payments'
     When method get
     Then status 404
-    And match response == {"code":1,"message":"Not found"}
+    And match response == {"message":"Not found"}

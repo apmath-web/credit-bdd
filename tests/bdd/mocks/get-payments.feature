@@ -21,7 +21,7 @@ Feature: Get payments mock server
       | {"payment":172600.0,"type":"regular","currency":"RUB","date":"2018-01-01","state":"upcoming","percent":31068.0,"body":141532.0,"remainCreditBody":858468.0} |
 
   #Create new credit
-  Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') && requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'} )
+  Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') && requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"amount":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'} )
     * def cred = request
     * eval id = incr(id)
     * eval cred.payments = payments
@@ -40,7 +40,7 @@ Feature: Get payments mock server
     * def results = []
     * eval for (var i = 0; i < idP; i++) {results.add(payments[i].payment)}
     * eval for (var i = idP; i < 6; i++) {results.add(paymentUpcoming[0].payment)}
-    * def response = (credits[pathParams.id] == null ? { code: 1, message: 'Not found' } : {payments:results});
+    * def response = (credits[pathParams.id] == null ? {message: 'Not found' } : {payments:results});
     * def responseStatus = (credits[pathParams.id] == null ? 404 : 200);
 
   #Get all paid payments
@@ -61,12 +61,12 @@ Feature: Get payments mock server
     * def res = []
     * eval for (var i = 0; i < idP; i++) if (payments[i].payment.type == paramValue('type')) {res.add(payments[i].payment)}
     * def res = (res.length == 0 ? null : res)
-    * def response = (credits[pathParams.id] == null ? { code: 1, message: 'Not found' } : response = {payments:res} )
+    * def response = (credits[pathParams.id] == null ? {message: 'Not found' } : response = {payments:res} )
 
   #Get early and upcoming payments
   Scenario: pathMatches('/credit/{id}/payments') && paramValue('type') == 'early' && paramValue('state') == 'upcoming'
     * def responseStatus = 400
-    * def response = { code: 2, message: 'Bad Request' }
+    * def response = {message: 'Bad Request' }
 
   #Delete credit
   Scenario: pathMatches('/credit/{id}') && methodIs('delete')
@@ -76,4 +76,4 @@ Feature: Get payments mock server
   #404 error
   Scenario:
     * def responseStatus = 404
-    * def response = { code: 1, message: 'Not found' }
+    * def response = {message: 'Not found' }
