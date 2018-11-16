@@ -3,47 +3,65 @@ Feature: integration test
 Background:
 * def serverConfig = read('mocks/start-mock.js')
 * def serverMock = serverConfig('close-credit-mock')
-* url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+
 * configure afterScenario = read('mocks/stop-mock.js')
 * configure headers = { 'Content-Type': 'application/json' }
 
-Scenario: Add credit
+Scenario: Check all
+
+    
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path 5
+    When method delete
+    Then status 404
+
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path 1
+    When method delete
+    Then status 404
+
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path 2
+    When method delete
+    Then status 404
+
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path 9
+    When method delete
+    Then status 404
+
+    * url 'http://localhost:' + serverMock.port + '/credit'
     Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
     When method post
     Then status 200
-    And def id1 = response.id
+    And def id = response.id
 
-    Given request {"person":{"firstName":"Alexandra","lastName":"Chnyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
-    When method post
-    Then status 200
-    And def id2 = response.id
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path id
+    When method delete
+    Then status 204
 
-    Given request {"person":{"firstName":"Alndra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
-    When method post
-    Then status 200
-    And def id3 = response.id
-
-    Given path id1
-    When method get
-    Then status 200
-    And match response == {message : 'Done'}
-
-    Given path id2
-    When method get
-    Then status 200
-    And match response == {message : 'Done'}
-
-    Given path id3
-    When method get
-    Then status 200
-    And match response == {message : 'Done'}
-
-    Given path "i"
-    When method get
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path "s1"
+    When method delete
     Then status 400
-    And match response == {message : 'Uncorrect'}
 
-    Given path 10
-    When method get
-    Then status 404
-    And match response == {message : 'Not exist'}
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path "2-3"
+    When method delete
+    Then status 400
+
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path "i"
+    When method delete
+    Then status 400
+
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path "o"
+    When method delete
+    Then status 400
+
+    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    Given path "!"
+    When method delete
+    Then status 400
