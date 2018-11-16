@@ -19,7 +19,17 @@ Feature: integration test
     Given path id
     When method get
     Then status 200
-    And match response == {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+    And match response == {"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'}
 
 
+    ##Delete credit info
+    Given path id
+    When method delete
+    Then status 204
+    And match response == ''
 
+    ##Get credit info
+    Given path id
+    When method get
+    Then status 404
+    And match response == {"message":"Not found"}
