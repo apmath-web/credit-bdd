@@ -14,7 +14,7 @@ Feature: stateful mock server
     #take-credit-mock.feature END
 
     #Create new credit
-    Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') && requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'})
+    Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') && requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"amount":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'})
         * def cred = request
         * eval id = incr(id)
         * eval cred.id = id
@@ -25,7 +25,7 @@ Feature: stateful mock server
 
     #Get credit info
     Scenario: pathMatches('/credit/{id}') && methodIs('get') && typeContains('json')
-        * def result = {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+        * def result = {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
         * def response = (credits[pathParams.id] == null ? {message: "Not found"} : result)
         * def responseStatus = (credits[pathParams.id] == null ? 404 : 200)
 
