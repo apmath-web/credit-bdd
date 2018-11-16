@@ -37,7 +37,7 @@ Feature: stateful mock server
     * def tempDate = date
     * def date = (tempDate >= request.date  || request.type == "early") ? date : request.date
     * def responseStatus = (tempDate >= request.date || request.type == "early") ? 400 : 200
-    * def r1 = {code : -1, "message" : "Credit not Found"}
+    * def r1 = {"message" : "Credit not Found"}
     * def r2 = {"paymentExecutedAt" : "#(date)"}
     * def response = (tempDate >= request.date  || request.type == "early") ? r1 : r2
 
@@ -45,14 +45,14 @@ Feature: stateful mock server
   Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment": "#number", "currency":"#string"})
     * def responseStatus = 400
     * eval if (credits[id].currency === request.currency) { date = request.date; credits[id].credit -= request.payment; responseStatus = 200 }  
-    * def response = (credits[id].currency === request.currency) ? {"paymentExecuteAt" : "#(dateToString(date))"} : {"code" : -1, "message": "Credit not found."} 
+    * def response = (credits[id].currency === request.currency) ? {"paymentExecuteAt" : "#(dateToString(date))"} : {"message": "Credit not found."} 
 
   #Payment with date
   Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment": "#number", "date":"#string"}) 
     * def tempDate = date
     * def date = (tempDate >= request.date) ? date : request.date
     * def responseStatus = (tempDate >= request.date) ? 400 : 200
-    * def r1 = {code : -1, "message" : "Credit not Found"}
+    * def r1 = {"message" : "Credit not Found"}
     * def r2 = {"paymentExecutedAt" : "#(date)"}
     * def response = (tempDate >= request.date) ? r1 : r2
 

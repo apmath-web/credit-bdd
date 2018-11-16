@@ -43,14 +43,14 @@ Feature: integration test
     And path id
     When method put
     Then status 400
-    And match response == {"code":'#number',"message":'#string'}
+    And match response == {"message":'#string'}
 
   #Trying 2nd payment - wrong date
     Given request {"payment":169106.00,"date":"2018-01-01"}
     And path id
     When method put
     Then status 400
-    And match response == {"code":'#number',"message":'#string'}
+    And match response == {"message":'#string'}
 
   #Perfrom 2nd payment - with date
     Given request {"payment":169106.00,"date":"2018-02-01"}
@@ -87,7 +87,7 @@ Feature: integration test
     And path id
     When method put
     Then status 400
-    And match response == {"code":'#number',"message":'#string'}
+    And match response == {"message":'#string'}
 
   #Perfrom 4th payment
     Given request {"payment":169106.00}
