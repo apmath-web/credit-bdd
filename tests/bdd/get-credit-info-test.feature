@@ -10,7 +10,7 @@ Feature: integration test
 
 
   Scenario: create a credit
-    Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"credit":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+    Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
     When method post
     Then status 200
     And def id = response.id
@@ -19,8 +19,7 @@ Feature: integration test
     Given path id
     When method get
     Then status 200
-    And match response == {"person":{"firstName":'#string',"lastName":'#string'},"credit":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'}
-
+    And match response == {"person":{"firstName":'#string',"lastName":'#string'},"amount":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'}
 
     ##Delete credit info
     Given path id
