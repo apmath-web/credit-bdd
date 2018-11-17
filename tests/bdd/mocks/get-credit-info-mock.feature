@@ -7,26 +7,22 @@ Feature: stateful mock server
         * def person = {}
         * def requestMatch = read('request-match.js')
 
-    #take-credit-mock.feature START
     * def id = 0
     * def credits = []
     * def incr = function(arg) { return arg + 1;}
-    #take-credit-mock.feature END
+    * def credit = ''
 
     #Create new credit
     Scenario: pathMatches('/credit') && methodIs('post') && typeContains('json') && requestMatch({"person":{"firstName":'#string',"lastName":'#string'},"amount":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'})
         * def cred = request
+        * eval credit = request
         * eval id = incr(id)
-        * eval cred.id = id
-        * def payments = []
-        * eval cred.payments = payments
         * eval credits.add(cred)
         * def response = {id:'#(id-1)'}
 
     #Get credit info
     Scenario: pathMatches('/credit/{id}') && methodIs('get') && typeContains('json')
-        * def result = {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
-        * def response = (credits[pathParams.id] == null ? {message: "Not found"} : result)
+        * def response = (credits[pathParams.id] == null ? {message: "Not found"} : credit)
         * def responseStatus = (credits[pathParams.id] == null ? 404 : 200)
 
     #Delete credit
