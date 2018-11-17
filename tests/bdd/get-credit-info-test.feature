@@ -7,28 +7,30 @@ Feature: integration test
     * configure afterScenario = read('mocks/stop-mock.js')
     * configure headers = { 'Content-Type': 'application/json' }
 
-
-
-  Scenario: create a credit
-    Given request {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":1000000,"agreementAt":"2018-10-08","currency":"RUB","duration":6,"percent":5}
+  Scenario Outline: positive tests
+    Given request <info>
     When method post
     Then status 200
+    And match response == { id:'#number' }
     And def id = response.id
 
-    ##Get credit info
     Given path id
     When method get
     Then status 200
     And match response == {"person":{"firstName":'#string',"lastName":'#string'},"amount":'#number',"agreementAt":'#string',"currency":'#string',"duration":'#number',"percent":'#number'}
+    And match response == <info>
 
-    ##Delete credit info
-    Given path id
-    When method delete
-    Then status 204
-    And match response == ''
+  Examples:
+    | info                                                                                                                                                   |
+    | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":60,"percent":5}   |
+    | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":23450,"agreementAt":"2018-10-08","currency":"USD","duration":10,"percent":10}    |
+    | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":34500000,"agreementAt":"2018-10-08","currency":"USD","duration":20,"percent":5}  |
+    | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":16,"percent":14}  |
+    | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":23,"percent":15}  |
+    | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":134500,"agreementAt":"2018-10-08","currency":"USD","duration":50,"percent":16}   |
 
-    ##Get credit info
-    Given path id
+  Scenario: negative test
+    Given path 2341
     When method get
     Then status 404
     And match response == {"message":"Not found"}
