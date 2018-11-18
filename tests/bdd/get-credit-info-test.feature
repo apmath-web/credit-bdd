@@ -29,8 +29,18 @@ Feature: integration test
     | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":2000000,"agreementAt":"2018-10-08","currency":"USD","duration":23,"percent":15}  |
     | {"person":{"firstName":"Alexandra","lastName":"Chernyshova"},"amount":134500,"agreementAt":"2018-10-08","currency":"USD","duration":50,"percent":16}   |
 
-  Scenario: negative test
-    Given path 2341
+  Scenario Outline: negative test
+    Given path <ID>
     When method get
     Then status 404
     And match response == {"message":"Not found"}
+
+   Examples:
+    |ID    |
+    |234590|
+    |126754|
+    |435466|
+    |097655|
+    |364765|
+    |548788|
+

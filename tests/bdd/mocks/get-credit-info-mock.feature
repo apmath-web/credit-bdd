@@ -27,8 +27,8 @@ Feature: stateful mock server
 
     #Delete credit
     Scenario: pathMatches('/credit/{id}') && methodIs('delete')
+        * eval credit = ''
         * def responseStatus = 204
-        * eval credits[pathParams.id] = null
 
     Scenario:
         * def responseStatus = 404
