@@ -12,7 +12,15 @@ Feature: stateful mock server
     * def incr = function(arg) { return arg + 1;}
     * def requestMatch = read('request-match.js')
     * def current = -1
-    * def paymentsDataMock = [{"payments":[{"type":"regular","state":"next","date":"2018-01-01","payment":169106,"percent":4167,"body":164939,"remainCreditBody":835061}]}, {"payments":[{"type":"regular","state":"next","date":"2018-02-01","payment":169106,"percent":3479,"body":165627,"remainCreditBody":669434}]}, {"payments":[{"type":"regular","state":"next","date":"2018-03-01","payment":169106,"percent":2789,"body":166317,"remainCreditBody":503117}]}, {"payments":[{"type":"regular","state":"next","date":"2018-04-01","payment":169106,"percent":2096,"body":167010,"remainCreditBody":336108}]}, {"payments":[{"type":"regular","state":"next","date":"2018-05-01","payment":169106,"percent":855,"body":168251,"remainCreditBody":36963}]}, {"payments":[{"type":"regular","state":"next","date":"2018-06-01","payment":37177,"percent":154,"body":36963,"remainCreditBody":0}]}, {"payments":[]}]
+    * table payments
+      | payments                                                                                                                                                      |
+      | [{"type":"regular","state":"next","date":"2018-01-01","payment":169200,"percent":4247,"body":164953,"remainCreditBody":1000000,"fullEarlyRepayment":1014425}] |
+      | [{"type":"regular","state":"next","date":"2018-02-01","payment":169200,"percent":3203,"body":165997,"remainCreditBody":835047,"fullEarlyRepayment":845225}]   |
+      | [{"type":"regular","state":"next","date":"2018-03-01","payment":169200,"percent":2750,"body":166450,"remainCreditBody":669050,"fullEarlyRepayment":676025}]   |
+      | [{"type":"regular","state":"next","date":"2018-04-01","payment":169200,"percent":2134,"body":167066,"remainCreditBody":502600,"fullEarlyRepayment":506825}]   |
+      | [{"type":"regular","state":"next","date":"2018-05-01","payment":169200,"percent":1379,"body":167821,"remainCreditBody":335534,"fullEarlyRepayment":337625}]   |
+      | [{"type":"regular","state":"next","date":"2018-06-01","payment":35970,"percent":152,"body":35818,"remainCreditBody":35818,"fullEarlyRepayment":35970}]        |
+      | []                                                                                                                                                            |
 
 
 
@@ -30,7 +38,7 @@ Feature: stateful mock server
   #&& requestMatch({"payments":"#array"}) 
     * eval current = incr(current)
     * def responseStatus = 200
-    * def response = paymentsDataMock[current]
+    * def response = payments[current]
 
    #Payment with full data
   Scenario: pathMatches('/credit/{id}') && methodIs('put') && typeContains('json') && requestMatch({"payment":"#number","type":"#string","currency":"#string","date":"#string"}) 

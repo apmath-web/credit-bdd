@@ -21,10 +21,10 @@ Feature: integration test
     And param state = 'next'
     When method get
     Then status 200
-    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-01-01","payment":169106,"percent":4167,"body":164939,"remainCreditBody":835061}]}
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-01-01","payment":169200,"percent":4247,"body":164953,"remainCreditBody":1000000,"fullEarlyRepayment":1014425}]}
 
   #Perfrom 1st payment - only payment
-    Given request {"payment":169106}
+    Given request {"payment":169200}
     And path id
     When method put
     Then status 200
@@ -36,24 +36,24 @@ Feature: integration test
     And param state = 'next'
     When method get
     Then status 200
-    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-02-01","payment":169106,"percent":3479,"body":165627,"remainCreditBody":669434}]}
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-02-01","payment":169200,"percent":3203,"body":165997,"remainCreditBody":835047,"fullEarlyRepayment":845225}]}
 
   #Trying 2nd payment - wrong currency
-    Given request {"payment":169106,"currency":"USD"}
+    Given request {"payment":169200,"currency":"USD"}
     And path id
     When method put
     Then status 400
     And match response == {"message":'#string'}
 
   #Trying 2nd payment - wrong date
-    Given request {"payment":169106,"date":"2018-01-01"}
+    Given request {"payment":169200,"date":"2018-01-01"}
     And path id
     When method put
     Then status 400
     And match response == {"message":'#string'}
 
   #Perfrom 2nd payment - with date
-    Given request {"payment":169106,"date":"2018-02-01"}
+    Given request {"payment":169200,"date":"2018-02-01"}
     And path id
     When method put
     Then status 200
@@ -65,10 +65,10 @@ Feature: integration test
     And param state = 'next'
     When method get
     Then status 200
-    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-03-01","payment":169106,"percent":2789,"body":166317,"remainCreditBody":503117}]}
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-03-01","payment":169200,"percent":2750,"body":166450,"remainCreditBody":669050,"fullEarlyRepayment":676025}]}
 
   #Perfrom 3nd payment - full data
-    Given request {"payment":169106,"type":"regular","currency":"RUB","date":"2018-03-01"}
+    Given request {"payment":169200,"type":"regular","currency":"RUB","date":"2018-03-01"}
     And path id
     When method put
     Then status 200
@@ -80,17 +80,17 @@ Feature: integration test
     And param state = 'next'
     When method get
     Then status 200
-    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-04-01","payment":169106,"percent":2096,"body":167010,"remainCreditBody":336108}]}
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-04-01","payment":169200,"percent":2134,"body":167066,"remainCreditBody":502600,"fullEarlyRepayment":506825}]}
 
   #Trying early payment - wrong date (4th payment missed)
-    Given request {"payment":269106,"type":"early","currency":"RUB","date":"2018-04-10"}
+    Given request {"payment":269200,"type":"early","currency":"RUB","date":"2018-04-10"}
     And path id
     When method put
     Then status 400
     And match response == {"message":'#string'}
 
   #Perfrom 4th payment
-    Given request {"payment":169106}
+    Given request {"payment":169200}
     And path id
     When method put
     Then status 200
@@ -102,7 +102,7 @@ Feature: integration test
     And param state = 'next'
     When method get
     Then status 200
-    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-05-01","payment":169106,"percent":855,"body":168251,"remainCreditBody":36963}]}
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-05-01","payment":169200,"percent":1379,"body":167821,"remainCreditBody":335534,"fullEarlyRepayment":337625}]}
 
   #Perfrom early payment 
     Given request {"payment":300000,"type":"early","date":"2018-04-25"}
@@ -117,10 +117,10 @@ Feature: integration test
     And param state = 'next'
     When method get
     Then status 200
-    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-06-01","payment":37177,"percent":154,"body":36963,"remainCreditBody":0}]}
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-06-01","payment":35970,"percent":152,"body":35818,"remainCreditBody":35818,"fullEarlyRepayment":35970}]}
 
   #Perfrom last payment
-    Given request {"payment":37177}
+    Given request {"payment":35970}
     And path id
     When method put
     Then status 200
