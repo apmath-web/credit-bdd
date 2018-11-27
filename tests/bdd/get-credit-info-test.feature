@@ -33,7 +33,7 @@ Feature: integration test
     Given path <ID>
     When method get
     Then status 404
-    And match response == {"message":"Not found"}
+    And match response == {"message":"#string"}
 
    Examples:
     |ID    |
