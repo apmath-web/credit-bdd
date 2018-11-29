@@ -9,12 +9,12 @@ Background:
 
 Scenario: Check on exist
     * url 'http://localhost:' + serverMock.port + '/credit'
-    Given path 5
+    Given path 1000
     When method get
     Then status 404
 
-    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
-    Given path 5
+    * url 'http://localhost:' + serverMock.port + '/credit' 
+    Given path 1000
     When method delete
     Then status 404
 
@@ -25,7 +25,7 @@ Scenario: Check on validation
     Then status 200
     And def id = response.id
 
-    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    * url 'http://localhost:' + serverMock.port + '/credit' 
     Given path id
     When method delete
     Then status 400
@@ -35,13 +35,13 @@ Scenario: Check on validation
     When method put
     Then status 200
 
-    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    * url 'http://localhost:' + serverMock.port + '/credit' 
     Given path id
     When method delete
     Then status 204
 
 Scenario Outline: create credit positive
-    * url 'http://localhost:' + serverMock.port + '/credit' + '/delete'
+    * url 'http://localhost:' + serverMock.port + '/credit' 
     Given path <ID>
     When method delete
     Then status 400
