@@ -111,16 +111,16 @@ Feature: integration test
     Then status 200
     And match response == {paymentExecutedAt:'#string'}
 
-  #Get next payment
+  #Get next payment - last payment (6th month removed)
     Given path id
     And path 'payments'
     And param state = 'next'
     When method get
     Then status 200
-    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-06-01","payment":35970,"percent":152,"body":35818,"remainCreditBody":35818,"fullEarlyRepayment":35970}]}
+    And match response == {"payments":[{"type":"regular","state":"next","date":"2018-05-01","payment":35970,"percent":152,"body":35818,"remainCreditBody":35818,"fullEarlyRepayment":35970}]}
 
   #Perfrom last payment
-    Given request {"payment":35970}
+    Given request {"payment":35970,"type":"early","date":"2018-05-01"}
     And path id
     When method put
     Then status 200
