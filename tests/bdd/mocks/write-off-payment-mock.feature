@@ -19,7 +19,7 @@ Feature: stateful mock server
       | [{"type":"regular","state":"next","date":"2018-03-01","payment":169200,"percent":2750,"body":166450,"remainCreditBody":669050,"fullEarlyRepayment":676025}]   |
       | [{"type":"regular","state":"next","date":"2018-04-01","payment":169200,"percent":2134,"body":167066,"remainCreditBody":502600,"fullEarlyRepayment":506825}]   |
       | [{"type":"regular","state":"next","date":"2018-05-01","payment":169200,"percent":1379,"body":167821,"remainCreditBody":335534,"fullEarlyRepayment":337625}]   |
-      | [{"type":"regular","state":"next","date":"2018-05-01","payment":35970,"percent":152,"body":35818,"remainCreditBody":35818,"fullEarlyRepayment":35970}]        |
+      | [{"type":"regular","state":"next","date":"2018-05-01","payment":17900,"percent":146,"body":17754,"remainCreditBody":35534,"fullEarlyRepayment":35800}]        |
       | []                                                                                                                                                            |
 
 
