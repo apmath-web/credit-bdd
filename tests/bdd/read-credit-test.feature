@@ -1,10 +1,7 @@
-Feature: integration test
+Feature: Read credit information integration test
 
   Background:
-    * def serverConfig = read('mocks/start-mock.js')
-    * def serverMock = serverConfig('get-credit-info-mock')
-    * url 'http://localhost:' + serverMock.port + '/credit'
-    * configure afterScenario = read('mocks/stop-mock.js')
+    * url 'http://localhost:8080/credit'
     * configure headers = { 'Content-Type': 'application/json' }
 
   Scenario Outline: positive tests
@@ -44,3 +41,4 @@ Feature: integration test
     |364765|
     |548788|
 
+    #TODO test finished credit info returns 404

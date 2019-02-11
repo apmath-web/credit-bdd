@@ -1,10 +1,7 @@
-Feature: integration test
+Feature: Create credit integration test
 
   Background:
-    * def serverConfig = read('mocks/start-mock.js')
-    * def serverMock = serverConfig('take-credit-mock')
-    * url 'http://localhost:' + serverMock.port + '/credit'
-    * configure afterScenario = read('mocks/stop-mock.js')
+    * url 'http://localhost:8080/credit'
     * configure headers = { 'Content-Type': 'application/json' }
 
   Scenario Outline: create credit positive
